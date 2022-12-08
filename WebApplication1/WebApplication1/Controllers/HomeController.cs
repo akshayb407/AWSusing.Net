@@ -41,6 +41,24 @@ namespace WebApplication1.Controllers
             var response = await S3Clinent.PutObjectAsync(request);
             return (int)response.HttpStatusCode;
 
+        }
+
+        [HttpPost("DeleteFile")]
+        public async Task<int> DeleteFolder(IAmazonS3 amazonS3, string bucketName, string folderName, string prefix = "")
+        {
+            
+
+            DeleteObjectRequest request = new DeleteObjectRequest();
+            if(string.IsNullOrWhiteSpace(prefix))
+            {
+                prefix = "";
+            }
+           
+            request.Key = (prefix.TrimEnd('/') + "/" +folderName.TrimEnd('/')+"/").TrimStart('/');
+            
+            var response = await S3Clinent.DeleteObjectAsync(request);
+            return (int)response.HttpStatusCode;
+
 
         }
     }
